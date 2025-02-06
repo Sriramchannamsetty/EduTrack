@@ -49,7 +49,7 @@ const signup=async (req,res)=>{
 
 };
 const login=async (req,res)=>{
-
+    console.log(req.body);
     try{
    const {username,password}=req.body;
    const existingUser= await User.findOne({username});
