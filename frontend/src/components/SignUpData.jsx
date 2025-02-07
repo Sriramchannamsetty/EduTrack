@@ -1,17 +1,32 @@
-import { useRef } from "react";
-function SignUpData({email,role,name,setRole}){
-    
-    return <>
-    <input type="text" placeholder="email" ref={email}/>
-    <br />
-    <input type="text" placeholder="name" ref={name}/>
-    <br />
-    <input type="radio" name="role"  id="teacher" value="teacher"checked={role === "teacher"} onChange={()=>{setRole("teacher")}}/>
-    <label htmlFor="teacher">Teacher</label>
-    <br />
-    <input type="radio" name="role"  id="student" value="student" checked={role === "student"} onChange={()=>{setRole("student")}}/>
-    <label htmlFor="student">Student</label>
-    <br />
-    </>
+function SignUpData({ email, role, name, setRole }) {
+    function handleRoleChange(newRole) {
+        setRole(newRole);
+    }
+
+    return (
+        <>
+            <div className="mb-3">
+                <input type="email" className="form-control" placeholder="Email" ref={email} required />
+            </div>
+            <div className="mb-3">
+                <input type="text" className="form-control" placeholder="Full Name" ref={name} required />
+            </div>
+
+            {/* Role Switch */}
+            <div className="role-switch-container">
+                <label className="form-label d-block text-center">Role</label>
+                <div className="switch-container">
+                    <div className="switch-bg" style={{ transform: role === "student" ? "translateX(0%)" : "translateX(100%)" }} />
+                    <button type="button" className={`switch-btn ${role === "student" ? "active" : ""}`} onClick={() => handleRoleChange("student")}>
+                        Student
+                    </button>
+                    <button type="button" className={`switch-btn ${role === "teacher" ? "active" : ""}`} onClick={() => handleRoleChange("teacher")}>
+                        Teacher
+                    </button>
+                </div>
+            </div>
+        </>
+    );
 }
+
 export default SignUpData;

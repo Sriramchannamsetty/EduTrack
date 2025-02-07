@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./AuthForm.css"; // Unified CSS file
 import SignUpData from "./SignUpData";
 
 function AuthForm() {
@@ -9,8 +11,8 @@ function AuthForm() {
     const email = useRef("");
     const name = useRef("");
 
-    function toggleHeading() {
-        setHeading((prev) => (prev === "Sign Up" ? "Login" : "Sign Up"));
+    function toggleHeading(newHeading) {
+        setHeading(newHeading);
     }
 
     async function handleSubmit(event) {
@@ -31,9 +33,6 @@ function AuthForm() {
                       password: password.current.value,
                   };
 
-        // console.log("Email:", username.current.value);
-        // console.log("Role:", role);
-
         try {
             const res = await fetch(`http://localhost:5000/api/auth/${endpoint}`, {
                 method: "POST",
@@ -49,19 +48,34 @@ function AuthForm() {
     }
 
     return (
-        <>
-            <h1>{heading}</h1>
-            <button onClick={toggleHeading}>Login</button>
-            <button onClick={toggleHeading}>Sign Up</button>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="username" ref={username} />
-                <br />
-                <input type="password" placeholder="password" ref={password} />
-                <br />
-                {heading === "Sign Up" && <SignUpData email={email} role={role} name={name} setRole={setRole} />}
-                <button>{heading}</button>
-            </form>
-        </>
+        <div className="container mt-5 d-flex justify-content-center">
+            <div className="auth-card shadow-lg p-4">
+                {/* Form Heading */}
+                <h2 className="text-center text-primary mb-3">{heading} Form</h2>
+
+                {/* Login/Signup Switch */}
+                <div className="switch-container">
+                    <div className="switch-bg" style={{ transform: heading === "Sign Up" ? "translateX(0%)" : "translateX(100%)" }} />
+                    <button type="button" className={`switch-btn ${heading === "Sign Up" ? "active" : ""}`} onClick={() => toggleHeading("Sign Up")}>
+                        Sign Up
+                    </button>
+                    <button type="button" className={`switch-btn ${heading === "Login" ? "active" : ""}`} onClick={() => toggleHeading("Login")}>
+                        Login
+                    </button>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <input type="text" className="form-control" placeholder="Username" ref={username} required />
+                    </div>
+                    <div className="mb-3">
+                        <input type="password" className="form-control" placeholder="Password" ref={password} required />
+                    </div>
+                    {heading === "Sign Up" && <SignUpData email={email} role={role} name={name} setRole={setRole} />}
+                    <button className="btn btn-primary w-100 btn-lg fw-bold mt-3">{heading}</button>
+                </form>
+            </div>
+        </div>
     );
 }
 
