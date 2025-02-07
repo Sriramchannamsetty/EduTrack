@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const {addCourse,deleteCourse,editCourse} = require('../controllers/assignment.controllers');
-module.exports = router;
+const {addAssignment,deleteAssignment,editAssignment} = require('../controllers/assignment.controllers');
+
 
 //create 
-router.post("/new",addCourse);
+router.post("/new",addAssignment);
 //delete
-router.delete("/:assignmentid",deleteCourse);
+router.delete("/:assignmentid",deleteAssignment);
 //edit
-router.put("/:assignmentid",editCourse);
+router.put("/:assignmentid",editAssignment);
+module.exports = router;

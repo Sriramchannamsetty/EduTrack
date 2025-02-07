@@ -59,7 +59,7 @@ async function deleteAssignment(req,res){
         res.status(500).json({error:err.message});
     }
 }
-async function editAssignment(){
+async function editAssignment(req,res){
     try{
         let assignment=await Assignment.findById(req.params.assignmentid);
         if(!assignment){
