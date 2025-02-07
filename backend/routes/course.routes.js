@@ -8,5 +8,5 @@ router.post("/new",addCourse);
 //delete
 router.delete("/:courseid",deleteCourse);
 //edit
-router.patch("/:courseid",editCourse);
+router.put("/:courseid",editCourse);
 
