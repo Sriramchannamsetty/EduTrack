@@ -7,7 +7,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ["teacher", "student"], required: true },
   profileImage: { type: String },  
-  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course", points: Number }],
+  courses: [
+    {
+      course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" }, // Reference to Course
+      points: { type: Number, required: true } // Points field
+    }
+  ],
+  
   assignments: [{ 
     assignment: { type: mongoose.Schema.Types.ObjectId, ref: "Assignment" },
     submitted: { type: Boolean, default: false },
