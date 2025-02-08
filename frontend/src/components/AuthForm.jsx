@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef, useState,useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AuthForm.css"; // Unified CSS file
 import { useNavigate } from "react-router";
 import SignUpData from "./SignUpData";
-
+import { AuthUser } from "../../store/Auth-store";
 function AuthForm({heading}) {
     const navigate=useNavigate();
     const [role, setRole] = useState("student");
@@ -11,7 +11,7 @@ function AuthForm({heading}) {
     const password = useRef("");
     const email = useRef("");
     const name = useRef("");
-
+    const {setUser} = useContext(AuthUser);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -40,6 +40,8 @@ function AuthForm({heading}) {
 
             const data = await res.json();
             console.log("Response:", data);
+            setUser(data); //context api
+            navigate('/home')
         } catch (error) {
             console.error("Fetch error:", error);
         }
