@@ -12,39 +12,35 @@ const courseSchema = new mongoose.Schema({
     time: { type: String }
   }]
 });
-courseSchema.post("save", async(data)=>{
-  console.log("post method of save"+" "+data);
-  let teacher = await User.findById(data.teacher);
-  teacher.courses.push({course:data._id,points:0});
-  await teacher.save();
-});
+courseSchema.pre("findOneAndDelete",async function(next){
+  try {
+    const course = await this.model.findOne(this.getQuery());
+    if (!course) {
+      return next(new Error("Course not found"));
+    }
+    const assignments = await Assignment.find({ course: course._id });
+    for (const assignment of assignments) {
+      await Assignment.findByIdAndDelete(assignment._id);
+    }
+    next();
+  } catch (error) {
+    console.error("Error in pre-delete course middleware:", error);
+    next(error);
+  }
+})
 courseSchema.post("findOneAndDelete", async function (data) {
   try {
-      console.log("Post method of findOneAndDelete triggered");
+      if (!data) return; 
+            let course=data;    
+            await User.findByIdAndUpdate(course.teacher, {
+              $pull: { courses: { course: course._id } } 
+            });
+            await User.updateMany(
+              { _id: { $in: course.students } },  
+              { $pull: { courses: { course: course._id } } }  
+            );
 
-      if (!data) return; // Ensure data exists
 
-      // 1. Remove from teacher
-      let teacher = await User.findById(data.teacher);
-      if (teacher) {
-          let courseIndex = teacher.courses.findIndex(c => c.course.toString() === data._id.toString());
-          if (courseIndex !== -1) {
-              teacher.courses.splice(courseIndex, 1);
-              await teacher.save();
-          }
-      }
-
-      // 2. Remove from students
-      for (let studentId of data.students) {
-          let student = await User.findById(studentId);
-          if (student) {
-              let studentCourseIndex = student.courses.findIndex(c => c.course.toString() === data._id.toString());
-              if (studentCourseIndex !== -1) {
-                  student.courses.splice(studentCourseIndex, 1);
-                  await student.save();
-              }
-          }
-      }
   } catch (error) {
       console.error("Error in post-delete middleware:", error);
   }

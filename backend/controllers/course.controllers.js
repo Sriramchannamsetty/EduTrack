@@ -15,7 +15,8 @@ async function addCourse(req,res){
         teacher : req.params.id,
     });
     await newCourse.save();
-
+    teacher.courses.push({ course: newCourse._id, points: 0 });
+    await teacher.save();
     res.status(200).json(newCourse);
     }
     catch(err){
@@ -68,5 +69,59 @@ async function editCourse(req,res){
     }
     
 }
+async function joinCourse(req,res){
+    try{
+    let {passkey}=req.body
+    let {courseid,id}=req.params;
+    let student=await User.findById(id);
+    if(!student||student.role!=="student"){
+        return res.status(400).json({error:"student not found"});
+    }
+    let course=await Course.findById(courseid);
+    if(!course){
+        return res.status(400).json({error:"course not found"});
+    }
+    if(!course.passkey.equals(passkey)){
+        return res.status(400).json({error:"invalid passkey"});
+    }
+    if (course.students.includes(id)) {
+        return res.status(400).json({ error: "Already enrolled in this course" });
+    }
 
-module.exports = {addCourse,deleteCourse,editCourse};
+    course.students.push(id);
+    await course.save();
+    
+    student.courses.push({course:courseid,points:0});
+    await student.save();
+    res.status(201).json({msg:"student enrolled"});}
+    catch(err){
+        res.status(500).json({error:err.message});
+    }
+    
+    
+}
+async function leaveCourse(req,res){
+    try{
+    let {courseid,id}=req.params;
+    let student=await User.findById(id);
+    if(!student||student.role!=="student"){
+        return res.status(400).json({error:"student not found"});
+    }
+    let course=await Course.findById(courseid);
+    if(!course){
+        return res.status(400).json({error:"course not found"});
+    }
+    if (!course.students.includes(id)) {
+        return res.status(400).json({ error: "Already left the course" });
+    }
+    course.students = course.students.filter(studentId => studentId.toString() !== id);
+    student.courses = student.courses.filter(c => c.course.toString() !== courseid);
+    await course.save();
+    await student.save();
+   }
+   catch(err){
+    res.status(500).json({error:err.message});
+   }
+}
+
+module.exports = {addCourse,deleteCourse,editCourse,joinCourse,leaveCourse};
