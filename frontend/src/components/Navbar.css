@@ -1,0 +1,50 @@
+/* Customizing Navbar Components */
+.navbar {
+    background-color: #f8f9fa;
+    padding: 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .search-box {
+    width: 200px; /* Adjust as needed */
+  }
+  
+  @media (max-width: 768px) {
+    .search-box {
+      width: 150px; /* Shrink search box on smaller screens */
+    }
+    .navbar .ml-3 {
+      margin-left: 0.5rem; /* Reduce margin in smaller screens for better spacing */
+    }
+  }
+  
+  .d-flex {
+    display: flex;
+  }
+  
+  .align-items-center {
+    align-items: center;
+  }
+  
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+  
+  .ml-3 {
+    margin-left: 1rem;
+  }
+  
+  .mr-3 {
+    margin-right: 1rem;
+  }
+  
+  .search-box {
+    margin-right: 0.5rem; /* Close search box to the icon */
+  }
+  
+  
