@@ -1,19 +1,17 @@
 import { useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AuthForm.css"; // Unified CSS file
+import { useNavigate } from "react-router";
 import SignUpData from "./SignUpData";
 
-function AuthForm() {
-    const [heading, setHeading] = useState("Sign Up");
+function AuthForm({heading}) {
+    const navigate=useNavigate();
     const [role, setRole] = useState("student");
     const username = useRef("");
     const password = useRef("");
     const email = useRef("");
     const name = useRef("");
 
-    function toggleHeading(newHeading) {
-        setHeading(newHeading);
-    }
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -56,10 +54,10 @@ function AuthForm() {
                 {/* Login/Signup Switch */}
                 <div className="switch-container">
                     <div className="switch-bg" style={{ transform: heading === "Sign Up" ? "translateX(0%)" : "translateX(100%)" }} />
-                    <button type="button" className={`switch-btn ${heading === "Sign Up" ? "active" : ""}`} onClick={() => toggleHeading("Sign Up")}>
+                    <button type="button" className={`switch-btn ${heading === "Sign Up" ? "active" : ""}`} onClick={() =>  navigate("/signup")}>
                         Sign Up
                     </button>
-                    <button type="button" className={`switch-btn ${heading === "Login" ? "active" : ""}`} onClick={() => toggleHeading("Login")}>
+                    <button type="button" className={`switch-btn ${heading === "Login" ? "active" : ""}`} onClick={() =>  navigate("/login")}>
                         Login
                     </button>
                 </div>
