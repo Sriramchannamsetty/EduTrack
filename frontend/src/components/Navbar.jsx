@@ -1,42 +1,80 @@
-function Navbar(){
-    return <>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#">Navbar</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Link</a>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#">Action</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-    </>
-}
+import React, { useState } from "react";
+import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa"; // React Icons for search, bell, user
+import { FaGraduationCap } from "react-icons/fa"; // Education Icon
 
-export default Navbar;
+const NavbarComponent = ({ user }) => {
+  const [search, setSearch] = useState(""); // State for the search box
+  const [isNavOpen, setIsNavOpen] = useState(false); // State to manage mobile nav toggle
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  return (
+    <Navbar expand="lg" bg="light" variant="light" className="navbar">
+      <Container fluid>
+        {/* Logo Section */}
+        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+          <FaGraduationCap size={30} className="mr-2" /> EduTrack
+        </Navbar.Brand>
+
+        {/* Hamburger Toggle Button */}
+        <Navbar.Toggle aria-controls="navbar-nav" onClick={() => setIsNavOpen(!isNavOpen)} />
+
+        {/* Navbar Links */}
+        <Navbar.Collapse id="navbar-nav" className={`justify-content-between ${isNavOpen ? "show" : ""}`}>
+          {/* Left Links */}
+          <Nav className="mr-auto">
+            <Nav.Link as={Link} to="/about">About</Nav.Link>
+            {user?.role === "teacher" ? (
+              <Nav.Link as={Link} to="/create-course">Create Course</Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to="/browse-courses">Browse Courses</Nav.Link>
+            )}
+          </Nav>
+
+          {/* Right Side: Search Box and Icons */}
+          <Nav className="d-flex align-items-center">
+            {/* Search Box and Icon */}
+            <Form inline className="d-flex align-items-center">
+              <FormControl
+                type="text"
+                placeholder="Search"
+                value={search}
+                onChange={handleSearchChange}
+                className="search-box mr-2"
+              />
+              <Button variant="outline-primary" className="d-flex align-items-center">
+                <FaSearch />
+              </Button>
+            </Form>
+
+            {/* Notifications and Profile Icons */}
+            <div className="ml-3 d-flex align-items-center">
+              <FaBell size={20} className="mr-3" />
+              {user ? (
+                <div className="d-flex align-items-center">
+                  <FaUserCircle size={20} className="mr-2" />
+                  <Button variant="outline-danger" >Logout</Button>
+                </div>
+              ) : (
+                <div className="d-flex align-items-center">
+                  <Link to="/login">
+                    <Button variant="outline-primary">Login</Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button variant="outline-secondary" className="ml-2">Signup</Button>
+                  </Link>
+                </div>
+              )}
+            </div>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
+
+export default NavbarComponent;
