@@ -1,80 +1,106 @@
 import React, { useState } from "react";
-import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa"; // React Icons for search, bell, user
-import { FaGraduationCap } from "react-icons/fa"; // Education Icon
+import { motion } from "framer-motion";
+import { FaSearch, FaBell, FaUserCircle, FaGraduationCap, FaSignOutAlt } from "react-icons/fa";
+import { Menu } from "lucide-react";
+import "./Navbar.css"
+const Navbar = ({ user }) => {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [search, setSearch] = useState("");
 
-const NavbarComponent = ({ user }) => {
-  const [search, setSearch] = useState(""); // State for the search box
-  const [isNavOpen, setIsNavOpen] = useState(false); // State to manage mobile nav toggle
+    return (
+        <motion.nav
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="navbar"
+        >
+            {/* Left Section - Logo & Course Link */}
+            <div className="left-section">
+                <Link to="/" className="logo">
+                    <FaGraduationCap size={28} className="icon" />
+                    <span>EduTrack</span>
+                </Link>
 
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  return (
-    <Navbar expand="lg" bg="light" variant="light" className="navbar">
-      <Container fluid>
-        {/* Logo Section */}
-        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          <FaGraduationCap size={30} className="mr-2" /> EduTrack
-        </Navbar.Brand>
-
-        {/* Hamburger Toggle Button */}
-        <Navbar.Toggle aria-controls="navbar-nav" onClick={() => setIsNavOpen(!isNavOpen)} />
-
-        {/* Navbar Links */}
-        <Navbar.Collapse id="navbar-nav" className={`justify-content-between ${isNavOpen ? "show" : ""}`}>
-          {/* Left Links */}
-          <Nav className="mr-auto">
-            <Nav.Link as={Link} to="/about">About</Nav.Link>
-            {user?.role === "teacher" ? (
-              <Nav.Link as={Link} to="/create-course">Create Course</Nav.Link>
-            ) : (
-              <Nav.Link as={Link} to="/browse-courses">Browse Courses</Nav.Link>
-            )}
-          </Nav>
-
-          {/* Right Side: Search Box and Icons */}
-          <Nav className="d-flex align-items-center">
-            {/* Search Box and Icon */}
-            <Form inline className="d-flex align-items-center">
-              <FormControl
-                type="text"
-                placeholder="Search"
-                value={search}
-                onChange={handleSearchChange}
-                className="search-box mr-2"
-              />
-              <Button variant="outline-primary" className="d-flex align-items-center">
-                <FaSearch />
-              </Button>
-            </Form>
-
-            {/* Notifications and Profile Icons */}
-            <div className="ml-3 d-flex align-items-center">
-              <FaBell size={20} className="mr-3" />
-              {user ? (
-                <div className="d-flex align-items-center">
-                  <FaUserCircle size={20} className="mr-2" />
-                  <Button variant="outline-danger" >Logout</Button>
-                </div>
-              ) : (
-                <div className="d-flex align-items-center">
-                  <Link to="/login">
-                    <Button variant="outline-primary">Login</Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button variant="outline-secondary" className="ml-2">Signup</Button>
-                  </Link>
-                </div>
-              )}
+                {user ? (
+                    <Link to={user.role == "teacher" ? "/create-course" : "/browse-courses"} className="nav-link">
+                        {user.role == "teacher" ? "Create Course" : "Browse Courses"}
+                    </Link>
+                ) : null}
             </div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+
+            {/* Search Box Centered */}
+            <div className="search-container">
+                <input
+                    type="text"
+                    placeholder="Search for courses..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="search-box"
+                />
+                <motion.div whileHover={{ scale: 1.1 }} className="search-icon">
+                    <FaSearch size={20} />
+                </motion.div>
+            </div>
+
+            {/* Right Side Icons */}
+            <div className="nav-icons">
+                <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
+                    <FaBell size={20} />
+                </motion.div>
+
+                {user ? (
+                    <>
+                        <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
+                            <FaUserCircle size={24} />
+                        </motion.div>
+                        <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
+                            <FaSignOutAlt size={20} />
+                        </motion.div>
+                    </>
+                ) : (
+                    <div className="auth-buttons">
+                        <Link to="/signup" className="signup-btn">Signup</Link>
+                        <Link to="/login" className="login-btn">Login</Link>
+                    </div>
+                )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+                className="menu-btn"
+                onClick={() => setMenuOpen(!menuOpen)}
+                whileTap={{ scale: 0.9 }}
+            >
+                <Menu size={25} />
+            </motion.button>
+
+            {/* Mobile Dropdown Menu */}
+            {menuOpen && (
+                <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="mobile-menu"
+                >
+                    {user ? (
+                        <>
+                            <Link to={user.role === "teacher" ? "/create-course" : "/browse-courses"}>
+                                {user.role === "teacher" ? "Create Course" : "Browse Courses"}
+                            </Link>
+                            <Link to="/profile">Profile</Link>
+                            <button className="logout-btn">Logout</button>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/signup" className="signup-btn">Signup</Link>
+                            <Link to="/login" className="login-btn">Login</Link>
+                        </>
+                    )}
+                </motion.div>
+            )}
+        </motion.nav>
+    );
 };
 
-export default NavbarComponent;
+export default Navbar;

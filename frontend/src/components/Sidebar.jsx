@@ -1,59 +1,64 @@
-import { useState, useContext } from "react";
-import { AuthUser } from "../../store/Auth-store";
+import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Home, Book, List, User, Trophy, Menu } from "lucide-react";
+import "./sidebar.css"
+const Sidebar = () => {
+    const [isOpen, setIsOpen] = useState(true);
 
-function Sidebar() {
-    const { user } = useContext(AuthUser);
-    const [selectedCourse, setSelectedCourse] = useState(null);
+    const sidebarVariants = {
+        open: { width: "250px", opacity: 1 },
+        closed: { width: "70px", opacity: 0.8 }
+    };
 
-    if (!user) return <p>Loading...</p>; // Show loading if user data isn't available
+    const menuItems = [
+        { name: "Courses", icon: <Book />, path: "/courses" },
+        { name: "Assignments", icon: <List />, path: "/assignments" },
+        { name: "Leaderboard", icon: <Trophy />, path: "/leaderboard" },
+        { name: "Profile", icon: <User />, path: "/profile" }
+    ];
 
     return (
-        <div className="d-flex flex-column p-3 bg-light" style={{ width: "250px", height: "100vh" }}>
-            <div className="text-center">
-                <img 
-                    src={user.profileImage || "default-avatar.png"} 
-                    alt="Profile" 
-                    className="rounded-circle" 
-                    width="80" 
-                    height="80"
-                />
-                <h5 className="mt-2">{user.name}</h5>
-                <p className="text-muted">{user.role}</p>
-            </div>
+        <motion.div
+            className="sidebar bg-primary text-white d-flex flex-column p-3"
+            initial="closed"
+            animate={isOpen ? "open" : "closed"}
+            variants={sidebarVariants}
+            transition={{ duration: 0.4 }}
+            style={{ height: "100vh", position: "fixed", top: 0, left: 0, overflowX: "hidden" }}
+        >
+            <motion.button
+                className="toggle-btn btn btn-light mb-4"
+                onClick={() => setIsOpen(!isOpen)}
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 200 }}
+            >
+                <Menu />
+            </motion.button>
 
-            <hr />
-
-            <h6>Enrolled Courses</h6>
-            <ul className="list-group">
-                {user.courses.map((c) => (
-                    <li 
-                        key={c.course._id} 
-                        className="list-group-item list-group-item-action"
-                        onClick={() => setSelectedCourse(c.course._id)}
-                        style={{ cursor: "pointer" }}
+            <ul className="list-unstyled">
+                {menuItems.map((item, index) => (
+                    <motion.li
+                        key={index}
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ type: "spring", stiffness: 200 }}
                     >
-                        {c.course.name}
-                    </li>
+                        <NavLink to={item.path} className="nav-link text-white d-flex align-items-center py-2">
+                            {item.icon}
+                            <motion.span
+                                className="ms-3"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: isOpen ? 1 : 0 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {item.name}
+                            </motion.span>
+                        </NavLink>
+                    </motion.li>
                 ))}
             </ul>
-
-            {selectedCourse && (
-                <>
-                    <hr />
-                    <h6>Assignments</h6>
-                    <ul className="list-group">
-                        {user.assignments
-                            .filter(a => a.assignment.course === selectedCourse)
-                            .map((a) => (
-                                <li key={a.assignment._id} className="list-group-item">
-                                    {a.assignment.title} {a.submitted ? "✅" : "❌"}
-                                </li>
-                            ))}
-                    </ul>
-                </>
-            )}
-        </div>
+        </motion.div>
     );
-}
+};
 
 export default Sidebar;
