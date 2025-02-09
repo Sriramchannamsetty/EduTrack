@@ -1,42 +1,124 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* General Reset */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+/* Navbar Styles */
+.navbar {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.navbar-toggler {
+  border: none;
+  outline: none;
+}
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+.nav-link {
+  color: #ffffff;
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out;
+}
+.nav-link:hover {
+  color: #cce5ff;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Sidebar Styles */
+.sidebar {
+  background-color: #007bff;
+  color: #ffffff;
+  box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 56px); /* Adjust for navbar height */
+  margin-top: 56px; /* Align below navbar */
+  flex-shrink: 0;
+  z-index: 1040;
+  width: 250px;
+  position: relative; /* Ensure sidebar is part of the layout */
+  transition: width 0.3s ease-in-out;
+}
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
+}
+.nav-link {
+  font-size: 1.1rem;
+  padding: 10px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+/* Content Area */
+.content-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: calc(100vh - 56px);
+  transition: all 0.3s ease-in-out;
+}
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
   }
-  to {
-    transform: rotate(360deg);
+  .content-wrapper.sidebar-closed .content {
+    margin-left: 0;
+  }
+  .nav-link {
+    font-size: 1rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 576px) {
+  .sidebar {
+    width: 0;
+    position: relative;
+    transition: width 0.3s ease-in-out;
+  }
+  .content-wrapper.sidebar-closed .content {
+    margin-left: 0;
   }
 }
 
-.card {
-  padding: 2em;
+/* Toggle Button Styles */
+.toggle-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
-.read-the-docs {
-  color: #888;
+.toggle-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
 }

@@ -1,106 +1,76 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Navbar, Nav, Container, Form, FormControl, Button } from "react-bootstrap";
+import { FaBell, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaBars, FaGraduationCap, FaUserCircle } from "react-icons/fa";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { motion } from "framer-motion";
-import { FaSearch, FaBell, FaUserCircle, FaGraduationCap, FaSignOutAlt } from "react-icons/fa";
-import { Menu } from "lucide-react";
-import "./Navbar.css"
-const Navbar = ({ user }) => {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [search, setSearch] = useState("");
 
-    return (
-        <motion.nav
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="navbar"
-        >
-            {/* Left Section - Logo & Course Link */}
-            <div className="left-section">
-                <Link to="/" className="logo">
-                    <FaGraduationCap size={28} className="icon" />
-                    <span>EduTrack</span>
-                </Link>
+const EduTrackNavbar = ({ user }) => {
+  const isLoggedIn = user? true: false;
+  const role = user?.role || "guest";
 
-                {user ? (
-                    <Link to={user.role == "teacher" ? "/create-course" : "/browse-courses"} className="nav-link">
-                        {user.role == "teacher" ? "Create Course" : "Browse Courses"}
-                    </Link>
-                ) : null}
-            </div>
+  const navVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
 
-            {/* Search Box Centered */}
-            <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Search for courses..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="search-box"
-                />
-                <motion.div whileHover={{ scale: 1.1 }} className="search-icon">
-                    <FaSearch size={20} />
-                </motion.div>
-            </div>
-
-            {/* Right Side Icons */}
-            <div className="nav-icons">
-                <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
-                    <FaBell size={20} />
-                </motion.div>
-
-                {user ? (
-                    <>
-                        <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
-                            <FaUserCircle size={24} />
-                        </motion.div>
-                        <motion.div whileHover={{ scale: 1.1 }} className="icon-box">
-                            <FaSignOutAlt size={20} />
-                        </motion.div>
-                    </>
-                ) : (
-                    <div className="auth-buttons">
-                        <Link to="/signup" className="signup-btn">Signup</Link>
-                        <Link to="/login" className="login-btn">Login</Link>
-                    </div>
-                )}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <motion.button
-                className="menu-btn"
-                onClick={() => setMenuOpen(!menuOpen)}
-                whileTap={{ scale: 0.9 }}
-            >
-                <Menu size={25} />
-            </motion.button>
-
-            {/* Mobile Dropdown Menu */}
-            {menuOpen && (
-                <motion.div
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="mobile-menu"
-                >
-                    {user ? (
-                        <>
-                            <Link to={user.role === "teacher" ? "/create-course" : "/browse-courses"}>
-                                {user.role === "teacher" ? "Create Course" : "Browse Courses"}
-                            </Link>
-                            <Link to="/profile">Profile</Link>
-                            <button className="logout-btn">Logout</button>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/signup" className="signup-btn">Signup</Link>
-                            <Link to="/login" className="login-btn">Login</Link>
-                        </>
-                    )}
-                </motion.div>
-            )}
-        </motion.nav>
-    );
+  return (
+    <motion.div variants={navVariants} initial="hidden" animate="visible">
+      <Navbar bg="primary" variant="dark" expand="lg" className="shadow-lg">
+        <Container>
+          <Navbar.Brand href="/" className="d-flex align-items-center">
+            <FaGraduationCap size={30} style={{ marginRight: "10px" }} />
+            EduTrack
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav">
+            <FaBars />
+          </Navbar.Toggle>
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="/about">About</Nav.Link>
+              {role === "teacher" ? (
+                <Nav.Link href="/create-course">Create Course</Nav.Link>
+              ) : role === "student" ? (
+                <Nav.Link href="/browse-courses">Browse Courses</Nav.Link>
+              ) : null}
+            </Nav>
+            <Form className="d-flex me-auto">
+              <FormControl
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="light">Search</Button>
+            </Form>
+            <Nav className="ms-auto">
+              <Nav.Link href="/notifications">
+                <FaBell />
+              </Nav.Link>
+              {isLoggedIn ? (
+                <>
+                  <Nav.Link href="/profile">
+                    <FaUserCircle /> Profile
+                  </Nav.Link>
+                  <Nav.Link href="/logout">
+                    <FaSignOutAlt /> Logout
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link href="/login">
+                    <FaSignInAlt /> Login
+                  </Nav.Link>
+                  <Nav.Link href="/signup">
+                    <FaUserPlus /> Signup
+                  </Nav.Link>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </motion.div>
+  );
 };
 
-export default Navbar;
+export default EduTrackNavbar;

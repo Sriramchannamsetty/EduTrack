@@ -1,37 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "../store/Auth-store"; // Import AuthProvider
-import AuthForm from "./components/AuthForm";
-import Home from "./components/home";
+import { Outlet } from "react-router-dom";
+import { AuthProvider } from "../store/Auth-store";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css"; // Import styles
+
 const App = () => {
-  const user={role:"teacher"}
+  const user={role:"teacher"};
   return (
-    <AuthProvider> 
-
-      <Router>
-        <Routes>
-          {/* <Route path="/" element={} />*/}
-          <Route path="/home" element={< Home/>} />
-          <Route path="/navbar" element={< Navbar user={user}/>} />
-          <Route path="/sidebar" element={< Sidebar />} />
-          {/*<Route path="/courses" element={} />
-          <Route path="/assignments" element={} />
-          <Route path="/schedule" element={} />
-          <Route path="/leaderboard" element={} /> */}
-          <Route path="/login" element={<AuthForm heading="Login"/>} />
-          <Route path="/signup" element={<AuthForm heading="Sign Up"/>} />
-          {/* <Route path="/browse" element={} /> */}
-          
-
-          
-
-        </Routes>
-      </Router>
+    <AuthProvider>
+      <div className="app-container">
+        <Navbar />
+        <div className="content-wrapper">
+          <Sidebar />
+          <main className="content">
+            <Outlet />
+          </main>
+        </div>
+      </div>
     </AuthProvider>
   );
 };
 
 export default App;
-
