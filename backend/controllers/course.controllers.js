@@ -123,5 +123,38 @@ async function leaveCourse(req,res){
     res.status(500).json({error:err.message});
    }
 }
+async function getCourse(req, res) {
+    try {
+        console.log("hi");
+      let { courseid, id } = req.params;
+  
+      let user = await User.findById(id).select("name email role");
+      if (!user) {
+        return res.status(400).json({ error: "User not found" });
+      }
+  
+      let course = await Course.findById(courseid)
+        .populate("teacher", "name email") 
+        .populate("students", "name email") 
+        .populate("assignments"); 
+  
+      if (!course) {
+        return res.status(404).json({ error: "Course not found" });
+      }
+  
+      if (user.role === "student" && !course.students.some(s => s._id.toString() === id)) {
+        return res.status(403).json({ error: "Student is not enrolled in this course" });
+      }
+  
+      if (user.role === "teacher" && course.teacher._id.toString() !== id) {
+        return res.status(403).json({ error: "You are not the teacher of this course" });
+      }
+  
+      res.status(200).json(course);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+  
 
-module.exports = {addCourse,deleteCourse,editCourse,joinCourse,leaveCourse};
+module.exports = {addCourse,deleteCourse,editCourse,joinCourse,leaveCourse,getCourse};

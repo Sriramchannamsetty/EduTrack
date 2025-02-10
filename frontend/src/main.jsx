@@ -7,6 +7,7 @@ import AuthForm from "./components/AuthForm";
 import Home from "./components/home";
 
 import { AuthProvider } from "../store/Auth-store";
+import CourseList from "./components/CourseList.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: "login", element: <AuthForm heading="Login" /> }, 
       { path: "signup", element: <AuthForm heading="Sign Up" /> },
       { path: "home", element: <Home /> },
+      {path: "browse-courses", element:<CourseList/>},
     ],
   },
 ]);

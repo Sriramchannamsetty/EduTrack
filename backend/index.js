@@ -4,6 +4,7 @@ const app=express();
 const mongoose=require("mongoose");
 const authRoutes=require("./routes/auth.routes");
 const courseRoutes = require("./routes/course.routes")
+const publicCourseRoutes=require("./routes/publiccourse.routes")
 const assignmentRoutes=require("./routes/assignment.routes")
 const cookieParser = require("cookie-parser");
 const connectdb = async()=>{
@@ -32,9 +33,9 @@ app.use((req, res, next) => {
 
    next();
 });
-
 app.get("/home",(req,res)=>{res.send("welcome to edutrack");});
 app.use("/api/auth",authRoutes);
+app.use("/api/courses",publicCourseRoutes);
 app.use("/api/:id/course",courseRoutes);
 app.use("/api/:id/course/:courseid/assignment",assignmentRoutes);
 app.listen( process.env.PORT,()=>{console.log("listening at port ",process.env.PORT);})
