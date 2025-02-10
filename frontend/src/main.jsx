@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AuthForm from "./components/AuthForm";
 import Home from "./components/home";
 
+import { AuthProvider } from "../store/Auth-store";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,8 +21,8 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </StrictMode>
+  </AuthProvider>
 );
 

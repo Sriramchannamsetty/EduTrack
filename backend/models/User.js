@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   courses: [
     {
       course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" }, // Reference to Course
-      points: { type: Number, required: true } // Points field
+      points: { type: Number} // Points field
     }
   ],
   
