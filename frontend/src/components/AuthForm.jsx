@@ -41,7 +41,7 @@ function AuthForm({heading}) {
             const data = await res.json();
             console.log("Response:", data);
             setUser(data); //context api
-            navigate('/course')
+            navigate('/home')
         } catch (error) {
             console.error("Fetch error:", error);
         }
