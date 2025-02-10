@@ -3,21 +3,22 @@ const User=require("../models/User");
 const bcrypt=require("bcryptjs");
 const signup=async (req,res)=>{
     try{
+      console.log(req.body);
       const {username,password,email,name,role}=req.body;
-    //   console.log(username,password,email,name,role);
+      console.log(username,password,email,name,role);
       const emailRegex= /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if(!emailRegex.test(email)){
         return res.status(400).json({error: "email is not valid"});
       }
       const existingUser=await User.findOne({username});
-     
+      console.log(existingUser);
       if(existingUser){
         return res.status(400).json({error: "user already exist"});
       }
-     
+      console.log("hi");
       const salt=await bcrypt.genSalt(10);
       const hashedPassword=await bcrypt.hash(password,salt);
-      //console.log("hi ",hashedPassword);
+      console.log("hi ",hashedPassword);
       const newUser=new User({
         username,
         password:hashedPassword,
@@ -25,9 +26,12 @@ const signup=async (req,res)=>{
         role,
         email,
       });
+      
        generatetoken(res,newUser._id);
+       
+
       await newUser.save();
-     
+     console.log("hi");
      res.status(200).json({
   _id: newUser._id,
   username: newUser.username,
@@ -42,7 +46,7 @@ const signup=async (req,res)=>{
 
     }
     catch(err){
-        res.status(500).json({error:err});
+        res.status(500).json({error:err.message});
     }
 
       
@@ -90,6 +94,7 @@ const logout=async(req,res)=>{
 };
 const getMe = async (req, res) => {
 	try {
+    console.log("hi");
 		const user = await User.findById(req.user._id).select("-password");
 		res.status(200).json(user);
 	} catch (error) {

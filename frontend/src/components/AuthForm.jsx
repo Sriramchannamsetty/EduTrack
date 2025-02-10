@@ -1,50 +1,43 @@
-import { useRef, useState,useContext } from "react";
+import { useRef, useState,useContext,useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./AuthForm.css"; // Unified CSS file
+import "./AuthForm.css"; 
 import { useNavigate } from "react-router";
 import SignUpData from "./SignUpData";
 import { AuthUser } from "../../store/Auth-store";
-function AuthForm({heading}) {
-    const navigate=useNavigate();
+function AuthForm({ heading }) {
+    const navigate = useNavigate();
     const [role, setRole] = useState("student");
     const username = useRef("");
     const password = useRef("");
     const email = useRef("");
     const name = useRef("");
-    const {setUser} = useContext(AuthUser);
+    const { user, authenticate } = useContext(AuthUser);
 
-    async function handleSubmit(event) {
+    useEffect(() => {
+        if (user) {
+            navigate("/home");
+        }
+    }, [user, navigate]);
+
+    function handleSubmit(event) {
         event.preventDefault();
 
-        let endpoint = heading === "Sign Up" ? "signup" : "login";
-        let endpointObj =
+        const credentials =
             heading === "Sign Up"
                 ? {
                       username: username.current.value,
                       password: password.current.value,
                       email: email.current.value,
                       name: name.current.value,
-                      role: role,
+                      role,
                   }
                 : {
                       username: username.current.value,
                       password: password.current.value,
                   };
 
-        try {
-            const res = await fetch(`http://localhost:5000/api/auth/${endpoint}`, {
-                method: "POST",
-                body: JSON.stringify(endpointObj),
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-            });
-
-            const data = await res.json();
-            console.log("Response:", data);
-            setUser(data); //context api
-            navigate('/home')
-        } catch (error) {
-            console.error("Fetch error:", error);
-        }
+        const endpoint = heading === "Sign Up" ? "signup" : "login";
+        authenticate(endpoint, credentials);
     }
 
     return (

@@ -122,3 +122,10 @@ body {
   background-color: #0056b3;
   transform: scale(1.1);
 }
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}

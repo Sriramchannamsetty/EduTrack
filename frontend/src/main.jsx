@@ -5,6 +5,9 @@ import App from "./App.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthForm from "./components/AuthForm";
 import Home from "./components/home";
+
+import { AuthProvider } from "../store/Auth-store";
+import CourseList from "./components/CourseList.jsx";
 import CourseForm from "./components/CourseForm.jsx";
 import AssignmentForm from "./components/AssignmentForm.jsx";
 
@@ -16,15 +19,16 @@ const router = createBrowserRouter([
       { path: "login", element: <AuthForm heading="Login" /> }, 
       { path: "signup", element: <AuthForm heading="Sign Up" /> },
       { path: "home", element: <Home /> },
-      { path :"course", element: <CourseForm />},
+      {path: "browse-courses", element:<CourseList/>},
+      { path :"create-course", element: <CourseForm />},
       { path :"assignment", element: <AssignmentForm />}
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <AuthProvider>
     <RouterProvider router={router} />
-  </StrictMode>
+  </AuthProvider>
 );
 

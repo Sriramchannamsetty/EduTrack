@@ -4,7 +4,7 @@ const generatetoken= (res,id)=>{
     const token = jwt.sign({ id }, process.env.JWT_SECRET, {
 		expiresIn: "15d",
 	});
-
+    console.log("z");
 	res.cookie("jwt", token, {
 		maxAge: 15 * 24 * 60 * 60 * 1000, //MS
 		httpOnly: true, // prevent XSS attacks cross-site scripting attacks
