@@ -1,0 +1,81 @@
+/* Sky Blue Themed Styling */
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background: #e0f7ff; /* Light Sky Blue */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 122, 255, 0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  /* Fade-in Animation */
+  .fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .form-heading {
+    text-align: center;
+    color: #007acc;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #007acc;
+  }
+  
+  .form-input {
+    padding: 10px;
+    border: 2px solid #007acc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Input Focus Effect */
+  .form-input:focus {
+    border-color: #005ea6;
+    box-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+  }
+  
+  /* Button Styling */
+  .form-button {
+    background: #007acc;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+  }
+  
+  /* Hover & Click Animation */
+  .form-button:hover {
+    background: #005ea6;
+  }
+  
+  .form-button:active {
+    transform: scale(0.95);
+  }
+  

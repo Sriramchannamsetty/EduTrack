@@ -5,6 +5,8 @@ import App from "./App.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthForm from "./components/AuthForm";
 import Home from "./components/home";
+import CourseForm from "./components/CourseForm.jsx";
+import AssignmentForm from "./components/AssignmentForm.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
       { path: "login", element: <AuthForm heading="Login" /> }, 
       { path: "signup", element: <AuthForm heading="Sign Up" /> },
       { path: "home", element: <Home /> },
+      { path :"course", element: <CourseForm />},
+      { path :"assignment", element: <AssignmentForm />}
     ],
   },
 ]);
