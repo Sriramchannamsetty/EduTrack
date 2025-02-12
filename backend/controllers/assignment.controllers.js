@@ -91,4 +91,60 @@ async function editAssignment(req,res){
         }
 }
 
-module.exports = {addAssignment,deleteAssignment,editAssignment};
+async function submitAssignment(req,res){
+    try {
+        let {id,courseid,assignmentid} = req.params;
+    let student = await User.findById(id);
+    let course = await Course.findById(courseid);
+    let assignment = await Assignment.findById(assignmentid);
+   // console.log(assignment,student);
+    if (!student || student.role !== "student") {
+        return res.status(400).json({ error: "Student not found or not authorized" });
+    }
+    if(!student.courses.some(c=>c.course.toString()==courseid)){
+        return res.status(400).json({ error: "Course not found" });
+    }
+    if(!student.assignments.some(a=>a.assignment.toString()==assignmentid)){
+       // console.log(assignmentid)
+        return res.status(400).json({ error: "Assignment not found" });
+    }
+    if(!course.assignments.some(a=>a.toString()==assignmentid)){
+        return res.status(400).json({ error: "Assignment not found in course" });
+    }
+    let solution = req.body.solution;
+    let curDate = new Date();
+    let incPoint = curDate<=assignment.dueDate? assignment.points:assignment.points/2;
+    
+    await User.findByIdAndUpdate(
+        id,
+        {
+            // Increase points for the specific course
+            $inc: { "courses.$[course].points": incPoint },
+    
+            // Set assignment fields in the assignments array
+            $set: {
+                "assignments.$[assignment].submitted": true,
+                "assignments.$[assignment].submissionDate": curDate,
+                "assignments.$[assignment].solution": solution
+            }
+        },
+        {
+            arrayFilters: [
+                { "course.course": courseid },  // Filter for the specific course
+                { "assignment.assignment": assignmentid }  // Filter for the specific assignment
+            ]
+        }
+    );
+    
+    
+    
+    //student = await User.findByIdAndUpdate(id,{assignments:{solution:solution,submitted:true,submissionDate:new Date()}});
+    res.status(200).json({msg:"Assignment submitted",student});
+    await student.save();
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+    
+}
+
+module.exports = {addAssignment,deleteAssignment,editAssignment,submitAssignment};
