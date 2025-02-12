@@ -81,7 +81,7 @@ async function joinCourse(req,res){
     if(!course){
         return res.status(400).json({error:"course not found"});
     }
-    if(!course.passkey.equals(passkey)){
+    if(!course.passkey==(passkey)){
         return res.status(400).json({error:"invalid passkey"});
     }
     if (course.students.includes(id)) {
