@@ -143,11 +143,11 @@ async function getCourse(req, res) {
       }
   
       if (user.role === "student" && !course.students.some(s => s._id.toString() === id)) {
-        return res.status(403).json({ error: "Student is not enrolled in this course" });
+        return res.status(400).json({ error: "Student is not enrolled in this course" });
       }
   
       if (user.role === "teacher" && course.teacher._id.toString() !== id) {
-        return res.status(403).json({ error: "You are not the teacher of this course" });
+        return res.status(400).json({ error: "You are not the teacher of this course" });
       }
   
       res.status(200).json(course);

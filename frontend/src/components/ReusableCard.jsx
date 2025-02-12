@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { FaBook, FaTasks } from "react-icons/fa";
 
 const ReusableCard = ({ doc, role, isEnrolled, type, onClick }) => {
-
+  console.log(doc);
   const getIcon = () => {
     switch (type) {
       case "course":

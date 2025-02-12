@@ -52,7 +52,7 @@ const Sidebar = () => {
           <Link to="/courses" className="nav-link text-white d-flex align-items-center mb-3">
             <FaBook size={20} style={{ marginRight: "10px" }} /> Courses
           </Link>
-          <Link to="/assignments" className="nav-link text-white d-flex align-items-center mb-3">
+          <Link to="/assignment-list" className="nav-link text-white d-flex align-items-center mb-3">
             <FaTasks size={20} style={{ marginRight: "10px" }} /> Assignments
           </Link>
           <Link to="/leaderboard" className="nav-link text-white d-flex align-items-center mb-3">

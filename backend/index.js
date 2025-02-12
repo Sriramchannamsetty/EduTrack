@@ -6,6 +6,7 @@ const authRoutes=require("./routes/auth.routes");
 const courseRoutes = require("./routes/course.routes")
 const publicCourseRoutes=require("./routes/publiccourse.routes")
 const assignmentRoutes=require("./routes/assignment.routes")
+const userAssignmentRoutes = require("./routes/user.assignment.routes");
 const cookieParser = require("cookie-parser");
 const connectdb = async()=>{
    await mongoose.connect(process.env.MONGO_URL);
@@ -38,4 +39,5 @@ app.use("/api/auth",authRoutes);
 app.use("/api/courses",publicCourseRoutes);
 app.use("/api/:id/course",courseRoutes);
 app.use("/api/:id/course/:courseid/assignment",assignmentRoutes);
+app.use("/api/:id/assignment",userAssignmentRoutes);
 app.listen( process.env.PORT,()=>{console.log("listening at port ",process.env.PORT);})
