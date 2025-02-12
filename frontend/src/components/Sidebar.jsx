@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaBook, FaTasks, FaTrophy, FaUserCircle, FaBars } from "react-icons/fa";
 import { motion } from "framer-motion";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -48,18 +49,18 @@ const Sidebar = () => {
           <FaBars size={20} style={{ cursor: "pointer" }} onClick={toggleSidebar} />
         </div>
         <nav className="nav flex-column">
-          <a href="/courses" className="nav-link text-white d-flex align-items-center mb-3">
+          <Link to="/courses" className="nav-link text-white d-flex align-items-center mb-3">
             <FaBook size={20} style={{ marginRight: "10px" }} /> Courses
-          </a>
-          <a href="/assignments" className="nav-link text-white d-flex align-items-center mb-3">
+          </Link>
+          <Link to="/assignments" className="nav-link text-white d-flex align-items-center mb-3">
             <FaTasks size={20} style={{ marginRight: "10px" }} /> Assignments
-          </a>
-          <a href="/leaderboard" className="nav-link text-white d-flex align-items-center mb-3">
+          </Link>
+          <Link to="/leaderboard" className="nav-link text-white d-flex align-items-center mb-3">
             <FaTrophy size={20} style={{ marginRight: "10px" }} /> Leaderboard
-          </a>
-          <a href="/profile" className="nav-link text-white d-flex align-items-center mb-3">
+          </Link>
+          <Link to="/profile" className="nav-link text-white d-flex align-items-center mb-3">
             <FaUserCircle size={20} style={{ marginRight: "10px" }} /> Profile
-          </a>
+          </Link>
         </nav>
       </motion.div>
     </>

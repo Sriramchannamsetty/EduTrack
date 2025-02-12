@@ -1,17 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ReusableCard from "./ReusableCard";
+import { AuthUser } from "../../store/Auth-store";
+import { useNavigate } from "react-router";
 
-const CourseList = () => {
+const CourseList = ({ type }) => {
+  const { user } = useContext(AuthUser);
+  const navigate = useNavigate();
+
+  let url = "http://localhost:5000/api/courses";
+  if (user) url = `http://localhost:5000/api/${user._id}/course/all`;
+  if (type === "searched") url = "http://localhost:5000/api/courses";
+
   const [courses, setCourses] = useState([]);
+  
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/courses"); // API Endpoint
-        if (!response.ok) {
-          throw new Error("Failed to fetch courses");
-        }
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch courses");
         const data = await response.json();
+        console.log(url,data.courses);
         setCourses(data);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -19,19 +28,31 @@ const CourseList = () => {
     };
 
     fetchCourses();
-  }, []);
+  }, [type, user,url]);
 
+  const view = (courseId) => {
+    console.log(courseId);
+    if (!user) return; // Ensure user is logged in
+    navigate("/specific", { state: { userId: user._id, courseId } }); // Pass userId and courseId
+  };
+  const join=(courseId)=>{
+      if(!user)return;
+      navigate("/join",{state:{userId:user._id,courseId}});
+  }
+   console.log(user.courses);
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Courses</h2>
       <div className="row">
-        {courses.map((course) => (
-          <div className="col-md-4" key={course._id}>
+        {courses.map((course, index) => (
+          <div className="col-md-4" key={course._id || index}>
+           
             <ReusableCard
-              title={course.title}
-              description={course.description}
               type="course"
-              onClick={() => console.log(`Viewing course: ${course.title}`)}
+              doc={course}
+              role={user ? user.role : "student"}
+              isEnrolled={user?.courses?.some((c) => String(c.course) == String(course._id))}
+              onClick={() => view(course._id)}
             />
           </div>
         ))}

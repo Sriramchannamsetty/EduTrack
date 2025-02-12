@@ -125,7 +125,7 @@ async function leaveCourse(req,res){
 }
 async function getCourse(req, res) {
     try {
-        console.log("hi");
+       console.log("abcdefgh");
       let { courseid, id } = req.params;
   
       let user = await User.findById(id).select("name email role");
@@ -155,6 +155,55 @@ async function getCourse(req, res) {
       res.status(500).json({ error: err.message });
     }
   }
+  async function allCourse(req, res) {
+    try {
+        const id = req.params.id;
+
+        // Find user and populate courses with full details
+        const user = await User.findById(id)
+            .populate({
+                path: "courses.course",
+                model: "Course",
+                select: "_id title description teacher",
+                populate: {
+                    path: "teacher",
+                    model: "User", // Ensure this matches the actual "User" model name in your database
+                    select: "name email"
+                }
+            });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        console.log(user);
+
+        // Check if population actually worked
+        if (!user.courses.length || !user.courses[0].course.title) {
+            return res.status(500).json({ error: "Courses not populated properly" });
+        }
+
+        // Format courses to return
+        const formattedCourses = user.courses.map(c => ({
+            _id: c.course?._id || null,
+            title: c.course?.title || "No Title",
+            description: c.course?.description || "No Description",
+            teacher: c.course?.teacher
+                ? {
+                      name: c.course.teacher.name,
+                      email: c.course.teacher.email
+                  }
+                : null,
+            points: c.points || 0
+        }));
+
+        res.status(200).json(formattedCourses);
+    } catch (err) {
+        console.error("Error fetching courses:", err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
   
 
-module.exports = {addCourse,deleteCourse,editCourse,joinCourse,leaveCourse,getCourse};
+module.exports = {addCourse,deleteCourse,editCourse,joinCourse,leaveCourse,getCourse,allCourse};

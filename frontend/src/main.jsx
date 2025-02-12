@@ -10,6 +10,7 @@ import { AuthProvider } from "../store/Auth-store";
 import CourseList from "./components/CourseList.jsx";
 import CourseForm from "./components/CourseForm.jsx";
 import AssignmentForm from "./components/AssignmentForm.jsx";
+import SpecificCourse from "./components/SpecificCourse.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,9 +20,11 @@ const router = createBrowserRouter([
       { path: "login", element: <AuthForm heading="Login" /> }, 
       { path: "signup", element: <AuthForm heading="Sign Up" /> },
       { path: "home", element: <Home /> },
-      {path: "browse-courses", element:<CourseList/>},
+      {path: "browse-courses", element:<CourseList type="searched"/>},
+      {path:"courses",element:<CourseList type="userspecific"/>},
       { path :"create-course", element: <CourseForm />},
-      { path :"assignment", element: <AssignmentForm />}
+      { path :"assignment", element: <AssignmentForm />},
+      {path:"specific",element:<SpecificCourse/>},
     ],
   },
 ]);
