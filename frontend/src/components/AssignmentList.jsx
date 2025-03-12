@@ -1,9 +1,11 @@
 import { useEffect,useContext,useState } from "react";
 import { AuthUser } from "../../store/Auth-store";
 import ReusableCard from "./ReusableCard";
+import { useNavigate } from "react-router";
 function AssignmentList(){
     const { user } = useContext(AuthUser);
     const [assignments, setAssignments] = useState([]);
+    const navigate = useNavigate();
     let url = `http://localhost:5000/api/${user._id}/assignment`;
       useEffect(() => {
         const fetchAssigments = async () => {
@@ -33,7 +35,7 @@ function AssignmentList(){
                   doc={assignment.assignment}
                   role={user ? user.role : "student"}
                   isEnrolled={true}
-                  onClick={() => view(assignment._id)}
+                  onClick={() => navigate("/specific-assignment",{ state: { userId: user._id, courseId } })}
                 />
               </div>
             ))}

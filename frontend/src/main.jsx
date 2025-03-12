@@ -12,7 +12,7 @@ import CourseForm from "./components/CourseForm.jsx";
 import AssignmentForm from "./components/AssignmentForm.jsx";
 import SpecificCourse from "./components/SpecificCourse.jsx";
 import AssignmentList from "./components/AssignmentList.jsx";
-
+import AssignmentSubmit from "./components/AssignmentSubmit.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,6 +26,7 @@ const router = createBrowserRouter([
       { path :"create-course", element: <CourseForm />},
       { path :"assignment", element: <AssignmentForm />},
       { path :"assignment-list", element: <AssignmentList />},
+      { path :"specific-assignment", element: <AssignmentSubmit />},
       {path:"specific",element:<SpecificCourse/>},
     ],
   },
