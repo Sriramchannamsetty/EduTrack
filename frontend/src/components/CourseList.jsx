@@ -39,7 +39,7 @@ const CourseList = ({ type }) => {
       if(!user)return;
       navigate("/join",{state:{userId:user._id,courseId}});
   }
-   console.log(user.courses);
+   
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Courses</h2>
