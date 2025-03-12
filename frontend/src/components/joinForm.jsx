@@ -24,7 +24,7 @@ const JoinForm = ({ show, handleClose ,courseid}) => {
       }
   
       const data = await res.json();
-      console.log(data);
+
       await getMe();
   
       navigate("/specific", { state: { userId: userid, courseId: courseid } });
