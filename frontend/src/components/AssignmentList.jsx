@@ -7,7 +7,9 @@ function AssignmentList({assignmentArr}){
     const { user } = useContext(AuthUser);
     const [assignments, setAssignments] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
     const courseId = location.state?.courseId;
+    console.log(location);
     let url = `http://localhost:5000/api/${user._id}/assignment`;
     let urlCourse = `http://localhost:5000/api/${user._id}/assignment`;
       useEffect(() => {
@@ -45,7 +47,7 @@ function AssignmentList({assignmentArr}){
                   doc={assignmentArr?assignment:assignment.assignment}
                   role={user ? user.role : "student"}
                   isEnrolled={true}
-                  onClick={() => navigate("/specific-assignment",{ state: {doc:assignment,userId:user._id,courseId:courseId} })}
+                  onClick={() => navigate("/specific-assignment",{ state: {doc:assignmentArr?assignment:assignment.assignment,userId:user._id,courseId:courseId} })}
                 />
               </div>
             ))}
