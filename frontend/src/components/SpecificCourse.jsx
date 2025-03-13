@@ -7,7 +7,6 @@ const SpecificCourse = () => {
   const location = useLocation();
   const userId = location.state?.userId; // Get userId
   const courseId = location.state?.courseId; // Get courseId
-  console.log(userId+" "+courseId);
   const [course, setCourse] = useState(null);
   const {user} = useContext(AuthUser);
   const navigate = useNavigate();
