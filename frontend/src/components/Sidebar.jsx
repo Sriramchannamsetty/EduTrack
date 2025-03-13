@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <Link to="/courses" className="nav-link">
             <FaBook /> {isOpen && "Courses"}
           </Link>
-          <Link to="/assignments" className="nav-link">
+          <Link to="/assignment-list" className="nav-link">
             <FaTasks /> {isOpen && "Assignments"}
           </Link>
           <Link to="/leaderboard" className="nav-link">
