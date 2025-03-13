@@ -7,7 +7,7 @@ const ReusableCard = ({ doc, role, isEnrolled, type, onClick }) => {
   const [showJoinForm, setShowJoinForm] = useState(false);
 
 
-  console.log(doc);
+
   const getIcon = () => {
     switch (type) {
       case "course":

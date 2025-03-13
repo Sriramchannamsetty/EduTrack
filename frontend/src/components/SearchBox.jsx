@@ -1,26 +1,53 @@
 import React, { useState } from "react";
-
-const SearchBox = ({ placeholder = "Search...", onSearch }) => {
+import { FaSearch, FaTimes } from "react-icons/fa";
+import "./SearchBox.css";
+import { useNavigate } from "react-router";
+const SearchBox = ({ placeholder = "Search courses"}) => {
   const [query, setQuery] = useState("");
-
+   const navigate=useNavigate();
+  // Handle input change
   const handleChange = (e) => {
     setQuery(e.target.value);
-    if (onSearch) {
-      onSearch(e.target.value);
-    }
+  };
+
+  // Handle form submission (Enter key or button click)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/browse-courses", { state: { searchQuery: query } });
+  };
+
+  // Clear search input
+  const clearSearch = () => {
+    setQuery("");
   };
 
   return (
-    <div className="w-full max-w-md p-2 border rounded-lg flex items-center bg-white shadow-md">
-      <input
-        type="text"
-        value={query}
-        onChange={handleChange}
-        placeholder={placeholder}
-        className="w-full p-2 outline-none text-gray-700"
-      />
-    </div>
+    <form onSubmit={handleSubmit} className="search-container">
+      <div className="search-box">
+        {/* Search Input */}
+        <input
+          type="text"
+          value={query}
+          onChange={handleChange}
+          placeholder={placeholder}
+          className="search-input"
+        />
+
+        {/* Clear Button (only visible when there's text) */}
+        {query && (
+          <button type="button" onClick={clearSearch} className="clear-btn">
+            <FaTimes size={18} />
+          </button>
+        )}
+
+        {/* Search Button (Clickable & Submittable) */}
+        <button type="submit" className="search-btn">
+          <FaSearch size={20} />
+        </button>
+      </div>
+    </form>
   );
 };
 
 export default SearchBox;
+

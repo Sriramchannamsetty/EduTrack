@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Navbar,
   Nav,
@@ -19,10 +19,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthUser } from "../../store/Auth-store";
 import SearchBox from "./SearchBox";
 import "./Navbar.css";
+import { useNavigate } from "react-router";
+
 const EduTrackNavbar = () => {
+  const navigate=useNavigate();
   const { user, loading, logout } = useContext(AuthUser);
-  const isLoggedIn = user ? true : false;
+  const isLoggedIn = !!user;
   const role = user?.role || "guest";
+
+ 
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="shadow-lg">
@@ -50,7 +55,10 @@ const EduTrackNavbar = () => {
                   <Nav.Link href="/browse-courses">Browse Courses</Nav.Link>
                 ) : null}
               </Nav>
-              <SearchBox />
+
+              {/* Search Box with Functionality */}
+              <SearchBox  />
+
               <Nav className="ms-auto">
                 <Nav.Link href="/notifications">
                   <FaBell />
