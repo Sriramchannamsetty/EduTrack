@@ -107,29 +107,43 @@ async function joinCourse(req,res){
     
     
 }
-async function leaveCourse(req,res){
-    try{
-    let {courseid,id}=req.params;
-    let student=await User.findById(id);
-    if(!student||student.role!=="student"){
-        return res.status(400).json({error:"student not found"});
+async function leaveCourse(req, res) {
+    try {
+        let { courseid, id } = req.params;
+
+        let student = await User.findById(id);
+        if (!student || student.role !== "student") {
+            return res.status(400).json({ error: "Student not found" });
+        }
+
+        let course = await Course.findById(courseid);
+        if (!course) {
+            return res.status(400).json({ error: "Course not found" });
+        }
+
+        if (!course.students.includes(id)) {
+            return res.status(400).json({ error: "Already left the course" });
+        }
+
+        // Remove student from course
+        course.students = course.students.filter(studentId => studentId.toString() !== id);
+
+        // Remove course from student's courses list
+        student.courses = student.courses.filter(c => c.course.toString() !== courseid);
+
+        // Remove assignments related to this course
+        student.assignments = student.assignments.filter(a => !course.assignments.includes(a.assignment));
+
+        await course.save();
+        await student.save();
+
+        res.status(200).json({ message: "Successfully left the course" });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
-    let course=await Course.findById(courseid);
-    if(!course){
-        return res.status(400).json({error:"course not found"});
-    }
-    if (!course.students.includes(id)) {
-        return res.status(400).json({ error: "Already left the course" });
-    }
-    course.students = course.students.filter(studentId => studentId.toString() !== id);
-    student.courses = student.courses.filter(c => c.course.toString() !== courseid);
-    await course.save();
-    await student.save();
-   }
-   catch(err){
-    res.status(500).json({error:err.message});
-   }
 }
+
 async function getCourse(req, res) {
     try {
        console.log("abcdefgh");

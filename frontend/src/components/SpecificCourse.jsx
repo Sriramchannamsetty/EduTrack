@@ -30,6 +30,31 @@ const SpecificCourse = () => {
     fetchCourse();
   }, [userId, courseId]);
 
+  const leaveCourse = async () => {
+    if (!userId || !courseId) return;
+
+    try {
+        const res = await fetch(`http://localhost:5000/api/${userId}/course/${courseId}/leave`, {
+            method: "DELETE",
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.error || "Failed to leave course");
+        }
+
+        console.log("Successfully left the course");
+
+        // Ensure this runs after fetch completes
+        navigate("/home", { state: { userId, courseId } });
+
+    } catch (error) {
+        console.error("Error leaving course:", error.message);
+    }
+};
+
+
+
   if (!course) return <div>Loading...</div>;
 
   return (
@@ -39,6 +64,7 @@ const SpecificCourse = () => {
       <h4>Assignments</h4>
       { <AssignmentList assignmentArr={course.assignments} /> }
       { user&&user.role=="teacher"&&(<button className="btn btn-primary" onClick={()=> navigate("/assignment",{ state: { userId: user._id, courseId } })}>Create Assignment</button>)}
+      { user&&user.role=="student"&&(<button className="btn btn-danger" onClick={leaveCourse}>Leave Course</button>)}
     </div>
   );
 };
