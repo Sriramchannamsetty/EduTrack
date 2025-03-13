@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router";
 
 const CourseList = ({ type }) => {
   const location = useLocation();
-  const query= location.state.searchQuery|| "";
+  const query= location.state?.searchQuery|| "";
   console.log(`queryb is ${query}`);
   const { user } = useContext(AuthUser);
   const navigate = useNavigate();
