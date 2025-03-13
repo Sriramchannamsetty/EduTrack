@@ -4,11 +4,11 @@ import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 const AssignmentSubmit = () => {
   const location = useLocation();
-  const assignments = location.state?.doc; // Get assignment details
-  const assignment=assignments.assignment;
+  const assignment = location.state?.doc; // Get assignment details
+
   const userId = location.state?.userId; // Get userId
   const courseId = location.state?.courseId; // Get courseId
- console.log(userId+" "+courseId);
+
   const [solution, setSolution] = useState("");
   const [message, setMessage] = useState("");
 
@@ -24,7 +24,7 @@ const AssignmentSubmit = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/${userId}/course/${courseId}/assignments/${assignment._id}`, {
+      const response = await fetch(`http://localhost:5000/api/${userId}/course/${courseId}/assignment/${assignment._id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

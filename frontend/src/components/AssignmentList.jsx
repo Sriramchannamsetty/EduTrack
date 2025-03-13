@@ -4,6 +4,7 @@ import ReusableCard from "./ReusableCard";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router";
 function AssignmentList({assignmentArr}){
+  const location=useLocation();
     const { user } = useContext(AuthUser);
     const [assignments, setAssignments] = useState([]);
     const navigate = useNavigate();
