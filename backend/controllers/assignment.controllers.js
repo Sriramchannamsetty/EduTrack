@@ -93,11 +93,15 @@ async function editAssignment(req,res){
 
 async function submitAssignment(req,res){
     try {
+       
         let {id,courseid,assignmentid} = req.params;
+        console.log(id+" "+courseid+" "+assignmentid);
     let student = await User.findById(id);
+    
     let course = await Course.findById(courseid);
+    console.log("hello");
     let assignment = await Assignment.findById(assignmentid);
-   // console.log(assignment,student);
+   
     if (!student || student.role !== "student") {
         return res.status(400).json({ error: "Student not found or not authorized" });
     }

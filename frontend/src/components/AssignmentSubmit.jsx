@@ -7,7 +7,7 @@ const AssignmentSubmit = () => {
   const assignment = location.state?.doc; // Get assignment details
 
   const userId = location.state?.userId; // Get userId
-  const courseId = location.state?.courseId; // Get courseId
+  const courseId = assignment.course; // Get courseId
 
   const [solution, setSolution] = useState("");
   const [message, setMessage] = useState("");
