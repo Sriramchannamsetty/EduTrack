@@ -1,18 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
 import ReusableCard from "./ReusableCard";
 import { AuthUser } from "../../store/Auth-store";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const CourseList = ({ type }) => {
+  const location = useLocation();
+  const query= location.state.searchQuery|| "";
+  console.log(`queryb is ${query}`);
   const { user } = useContext(AuthUser);
   const navigate = useNavigate();
 
-  let url = "http://localhost:5000/api/courses";
-  if (user) url = `http://localhost:5000/api/${user._id}/course/all`;
-  if (type === "searched") url = "http://localhost:5000/api/courses";
+  let url = `http://localhost:5000/api/courses?search=${query}`;
+  if (user) url = `http://localhost:5000/api/${user._id}/course/all?search=${query}`;
+  if (type === "searched") url = `http://localhost:5000/api/courses?search=${query}`;
 
   const [courses, setCourses] = useState([]);
-  
+  console.log(url);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -20,7 +23,7 @@ const CourseList = ({ type }) => {
         const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch courses");
         const data = await response.json();
-        console.log(url,data.courses);
+        
         setCourses(data);
       } catch (error) {
         console.error("Error fetching courses:", error);
