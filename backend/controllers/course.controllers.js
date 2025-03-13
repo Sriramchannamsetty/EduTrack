@@ -94,7 +94,12 @@ async function joinCourse(req,res){
     await course.save();
     
     student.courses.push({course:courseid,points:0});
+    for(let data of course.assignments){
+        student.assignments.push({assignment: data, submitted: false, submissionDate: null, solution: null});
+    }
+    
     await student.save();
+
     res.status(201).json({msg:"student enrolled"});}
     catch(err){
         res.status(500).json({error:err.message});
