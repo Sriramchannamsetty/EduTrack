@@ -2,6 +2,7 @@ import { useEffect,useContext,useState } from "react";
 import { AuthUser } from "../../store/Auth-store";
 import ReusableCard from "./ReusableCard";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router";
 function AssignmentList({assignmentArr}){
     const { user } = useContext(AuthUser);
     const [assignments, setAssignments] = useState([]);
@@ -44,7 +45,7 @@ function AssignmentList({assignmentArr}){
                   doc={assignmentArr?assignment:assignment.assignment}
                   role={user ? user.role : "student"}
                   isEnrolled={true}
-                  onClick={() => navigate("/specific-assignment",{ state: { userId: user._id, courseId } })}
+                  onClick={() => navigate("/specific-assignment",{ state: {doc:assignment,userId:user._id,courseId:courseId} })}
                 />
               </div>
             ))}
