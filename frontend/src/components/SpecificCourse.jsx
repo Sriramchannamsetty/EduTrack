@@ -19,7 +19,8 @@ const SpecificCourse = () => {
         const response = await fetch(`http://localhost:5000/api/${userId}/course/${courseId}`);
         if (!response.ok) throw new Error("Failed to fetch course details");
         const data = await response.json();
-        //console.log(data);
+        // console.log("looke here ->")
+        // console.log(data.assignments);
         setCourse(data);
       } catch (error) {
         console.error("Error fetching course:", error);
@@ -36,7 +37,7 @@ const SpecificCourse = () => {
       <h2>{course.title}</h2>
       <p>{course.description}</p>
       <h4>Assignments</h4>
-      { <AssignmentList courseId={course._id} /> }
+      { <AssignmentList assignmentArr={course.assignments} /> }
       { user&&user.role=="teacher"&&(<button className="btn btn-primary" onClick={()=> navigate("/assignment",{ state: { userId: user._id, courseId } })}>Create Assignment</button>)}
     </div>
   );
