@@ -3,10 +3,19 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Spinner } from "react-bootstrap";
-import { AuthUser } from "../store/Auth-store";
+import { AuthProvider, AuthUser } from "../store/Auth-store"; // Import AuthProvider
 import "./App.css";
 
 const App = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+};
+
+// Separate AppContent to use useContext safely inside AuthProvider
+const AppContent = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { loading } = useContext(AuthUser);
 

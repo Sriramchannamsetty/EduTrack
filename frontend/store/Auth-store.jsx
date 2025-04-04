@@ -1,11 +1,12 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const AuthUser = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   async function getMe() {
     try {
       const res = await fetch("http://localhost:5000/api/auth/getMe", { credentials: "include" });
@@ -54,6 +55,7 @@ const AuthProvider = ({ children }) => {
       const res = await fetch("http://localhost:5000/api/auth/logout", { method: "POST", credentials: "include" });
       if (res.ok) {
         setUser(null);
+        navigate("/")
       } else {
         console.log("Logout failed");
       }

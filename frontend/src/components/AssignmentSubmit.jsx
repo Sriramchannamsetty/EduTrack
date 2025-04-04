@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
 
 const AssignmentSubmit = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const assignment = location.state?.doc; // Get assignment details
 
   const userId = location.state?.userId; // Get userId
-  const courseId = location.state?.courseId; // Get courseId
+  const courseId = assignment.course; // Get courseId
 
   const [solution, setSolution] = useState("");
   const [message, setMessage] = useState("");
@@ -38,6 +39,7 @@ const AssignmentSubmit = () => {
       const data = await response.json();
       setMessage("Assignment submitted successfully!");
       console.log("Submission response:", data);
+      navigate("/specific-assignment",{ state: {doc:assignment,userId:userId,courseId:courseId} })
     } catch (error) {
       console.error("Error submitting assignment:", error);
       setMessage("Failed to submit assignment.");

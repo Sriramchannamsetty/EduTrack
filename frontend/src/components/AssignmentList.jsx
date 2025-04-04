@@ -8,7 +8,6 @@ function AssignmentList({assignmentArr}){
     const { user } = useContext(AuthUser);
     const [assignments, setAssignments] = useState([]);
     const navigate = useNavigate();
-    const location = useLocation();
     const courseId = location.state?.courseId;
     console.log(location);
     let url = `http://localhost:5000/api/${user._id}/assignment`;
