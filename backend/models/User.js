@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   
   assignments: [{ 
     assignment: { type: mongoose.Schema.Types.ObjectId, ref: "Assignment" },
-    submitted: { type: Boolean, default: false },
+    submitted: { type: String, default: "NO"},
     submissionDate: { type: Date },
     solution:{type:String},
   }] ,

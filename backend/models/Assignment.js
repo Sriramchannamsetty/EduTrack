@@ -20,11 +20,11 @@ assignmentSchema.post("save", async function (data) {
       course.assignments.push(data._id);
       await course.save();
       await User.findByIdAndUpdate(course.teacher, {
-          $push: { assignments: { assignment: data._id, submitted: false, submissionDate: null, solution: null } }
+          $push: { assignments: { assignment: data._id, submitted: "NO", submissionDate: null, solution: null } }
       });
       await User.updateMany(
           { _id: { $in: course.students } }, 
-          { $push: { assignments: { assignment: data._id, submitted: false, submissionDate: null, solution: null } } }
+          { $push: { assignments: { assignment: data._id, submitted: "NO", submissionDate: null, solution: null } } }
       );
 
   } catch (err) {

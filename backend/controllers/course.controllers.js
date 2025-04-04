@@ -95,7 +95,7 @@ async function joinCourse(req,res){
     
     student.courses.push({course:courseid,points:0});
     for(let data of course.assignments){
-        student.assignments.push({assignment: data, submitted: false, submissionDate: null, solution: null});
+        student.assignments.push({assignment: data, submitted: "NO", submissionDate: null, solution: null});
     }
     
     await student.save();
