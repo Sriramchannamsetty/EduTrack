@@ -117,17 +117,27 @@ async function submitAssignment(req,res){
     }
     let solution = req.body.solution;
     let curDate = new Date();
-    let incPoint = curDate<=assignment.dueDate? assignment.points:assignment.points/2;
-    
+    let assignmentEntry = student.assignments.find(a => a.assignment.toString() === assignmentid);
+        if (!assignmentEntry) {
+            return res.status(400).json({ error: "Assignment not found" });
+        }
+    let before=assignmentEntry.submitted;
+    let after= curDate<=assignment.dueDate? "YES":"LATE";
+    let incpoints=0;
+    console.log(before);
+    if(before=="NO"&&after=="YES"){incpoints=assignment.points;}
+    if(before=="NO"&&after=="LATE"){incpoints=assignment.points/2;}
+    if(before=="YES"&&after=="LATE"){incpoints=-assignment.points/2;}
+
     await User.findByIdAndUpdate(
         id,
         {
             // Increase points for the specific course
-            $inc: { "courses.$[course].points": incPoint },
+            $inc: { "courses.$[course].points": incpoints },
     
             // Set assignment fields in the assignments array
             $set: {
-                "assignments.$[assignment].submitted": true,
+                "assignments.$[assignment].submitted": after,
                 "assignments.$[assignment].submissionDate": curDate,
                 "assignments.$[assignment].solution": solution
             }
@@ -146,6 +156,7 @@ async function submitAssignment(req,res){
     res.status(200).json({msg:"Assignment submitted",student});
     await student.save();
     } catch (error) {
+        console.log(error);
         res.status(500).json({error:error.message});
     }
     
