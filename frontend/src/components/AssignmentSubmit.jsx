@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Container, Card, Form, Button, Alert } from "react-bootstrap";
-
+import { AuthUser } from "../../store/Auth-store";
 const AssignmentSubmit = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const assignment = location.state?.doc; // Get assignment details
-
+  const {getMe} = useContext(AuthUser);
   const userId = location.state?.userId; // Get userId
   const courseId = assignment.course; // Get courseId
 
@@ -37,6 +37,7 @@ const AssignmentSubmit = () => {
 
       if (!response.ok) throw new Error("Submission failed.");
       const data = await response.json();
+      await getMe();
       setMessage("Assignment submitted successfully!");
       console.log("Submission response:", data);
       navigate("/specific-assignment",{ state: {doc:assignment,userId:userId,courseId:courseId} })
