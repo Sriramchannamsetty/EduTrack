@@ -4,9 +4,9 @@ import { AuthUser } from "../../store/Auth-store";
 import "./Profile.css"; // Import the CSS file
 import placeholderImage from "../assets/profile.jpg"; // Importing the placeholder
 
-function Profile() {
+function Profile({setDisplay}) {
   const { user } = useContext(AuthUser);
-
+  console.log(placeholderImage)
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card profile-card p-4 shadow-lg text-center">
@@ -22,7 +22,7 @@ function Profile() {
         <p><strong>Email:</strong> {user.email}</p>
         <p><strong>Role:</strong> <span className="badge bg-primary">{user.role}</span></p>
 
-        <button className="btn btn-primary mt-3 edit-btn">Edit Profile</button>
+        <button className="btn btn-primary mt-3 edit-btn" onClick={()=>{setDisplay("edit")}}>Edit Profile</button>
       </div>
     </div>
   );

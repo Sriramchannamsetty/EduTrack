@@ -102,4 +102,17 @@ const getMe = async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 }
-module.exports={signup,login,logout,getMe};
+const editProfile = async (req,res)=>{
+  try{
+      console.log("edit profile");
+      const {name,profileImage}=req.body;
+      console.log(req.body);
+      let updatedUser = await User.findByIdAndUpdate(req.params.id,{name,profileImage},{ new: true });
+      if(!updatedUser)return res.status(400).json({error:"user does not exist"});
+      res.status(200).json({message:"profileupdated successfully",updatedUser});
+  }
+  catch(error){
+    res.status(500).json({error});
+  }
+}
+module.exports={signup,login,logout,getMe,editProfile};

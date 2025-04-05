@@ -13,7 +13,7 @@ import AssignmentForm from "./components/AssignmentForm.jsx";
 import SpecificCourse from "./components/SpecificCourse.jsx";
 import AssignmentList from "./components/AssignmentList.jsx";
 import AssignmentSubmit from "./components/AssignmentSubmit.jsx";
-import Profile from "./components/Profile.jsx"
+import ShowProfile from "./components/ShowProfile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
       { path :"assignment-list", element: <AssignmentList />},
       { path :"specific-assignment", element: <AssignmentSubmit />},
       {path:"specific",element:<SpecificCourse/>},
-      {path:"profile",element:<Profile />},
+      {path:"profile",element:<ShowProfile />},
     ],
   },
 ]);

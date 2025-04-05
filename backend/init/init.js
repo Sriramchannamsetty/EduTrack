@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");  
 const Course = require("../models/Course");  
 
-const MONGO_URL = "mongodb+srv://sriram:Marirs%403074@cluster0.2qfcv.mongodb.net/edutrack?retryWrites=true&w=majority";
+const MONGO_URL = "mongodb+srv://20223046genaigdscmnnit24:uStirEcNoppK7ZBV@cluster0.bcjio.mongodb.net/edutrack?retryWrites=true&w=majority&";
 
 async function initDatabase() {
   try {
