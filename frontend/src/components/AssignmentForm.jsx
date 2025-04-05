@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 function AssignmentForm(){
     const location = useLocation();
     const navigate = useNavigate();
-    //const {user} = useContext(AuthUser);
+    const {getMe} =useContext(AuthUser);
     const courseId = location.state?.courseId; // Get courseId
     const userId = location.state?.userId; // Get userId
     console.log("courseID is "+courseId);
@@ -17,6 +17,7 @@ function AssignmentForm(){
             headers: { "Content-Type": "application/json; charset=utf-8" },
         })
         const data = await res.json();
+        await getMe();
         console.log(data);
         navigate("/specific-assignment",{ state: {doc:data,userId:userId,courseId:courseId} })
 

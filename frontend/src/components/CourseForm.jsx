@@ -4,7 +4,7 @@ import { AuthUser } from "../../store/Auth-store";
 import { useNavigate } from "react-router";
 function CourseForm(){
     const navigate = useNavigate();
-    const {user} = useContext(AuthUser);
+    const {user,getMe} = useContext(AuthUser);
     async function onSubmit(formData){
         console.log(formData);
         const res = await fetch(`http://localhost:5000/api/${user._id}/course/new`,{
@@ -14,6 +14,7 @@ function CourseForm(){
         })
         const data = await res.json();
         console.log(data);
+        await getMe();
         navigate("/specific", { state: { userId: user._id, courseId: data._id } });
 
     }
