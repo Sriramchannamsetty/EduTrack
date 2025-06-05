@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import {
   Navbar,
   Nav,
@@ -21,24 +21,32 @@ import SearchBox from "./SearchBox";
 import "./Navbar.css";
 import { useNavigate } from "react-router";
 
-const EduTrackNavbar = () => {
-  const navigate=useNavigate();
+const EduTrackNavbar = ({ toggleSidebar }) => {
+  const navigate = useNavigate();
   const { user, loading, logout } = useContext(AuthUser);
   const isLoggedIn = !!user;
   const role = user?.role || "guest";
 
- 
-
   return (
-    <Navbar bg="primary" variant="dark" expand="lg" className="shadow-lg">
-      <Container>
-        <Navbar.Brand href="/" className="d-flex align-items-center">
+    <Navbar bg="primary" variant="dark" expand="lg" className="shadow-lg px-3">
+      <Container fluid className="d-flex align-items-center">
+        {/* Sidebar Toggle Button */}
+        <Button
+          variant="link"
+          className="text-white me-3 p-0"
+          style={{ fontSize: "1.3rem" }}
+          onClick={toggleSidebar}
+        >
+          <FaBars />
+        </Button>
+
+        {/* Brand */}
+        <Navbar.Brand href="/" className="d-flex align-items-center me-auto">
           <FaGraduationCap size={30} style={{ marginRight: "10px" }} />
           EduTrack
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="navbar-nav">
-          <FaBars />
-        </Navbar.Toggle>
+
+        <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           {loading ? (
             <div className="w-100 text-center py-2">
@@ -56,8 +64,7 @@ const EduTrackNavbar = () => {
                 ) : null}
               </Nav>
 
-              {/* Search Box with Functionality */}
-              <SearchBox  />
+              <SearchBox />
 
               <Nav className="ms-auto">
                 <Nav.Link href="/notifications">
@@ -96,4 +103,3 @@ const EduTrackNavbar = () => {
 };
 
 export default EduTrackNavbar;
-

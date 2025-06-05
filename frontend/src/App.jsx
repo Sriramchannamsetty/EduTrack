@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import EduTrackNavbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Spinner } from "react-bootstrap";
 import { AuthProvider, AuthUser } from "../store/Auth-store";
@@ -23,15 +23,15 @@ const AppContent = () => {
   const { loading } = useContext(AuthUser);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen((prev) => !prev);
   };
 
   return (
     <div className="app">
-      <Navbar />
-     
+      <EduTrackNavbar toggleSidebar={toggleSidebar} />
+
       <div className="content-container">
-        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <Sidebar isOpen={isSidebarOpen} />
         <div className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
           {loading ? (
             <div className="loading-container">
@@ -40,8 +40,8 @@ const AppContent = () => {
             </div>
           ) : (
             <>
-             <FlashMessage /> {/* Flash message shows globally */}
-            <Outlet />
+              <FlashMessage />
+              <Outlet />
             </>
           )}
         </div>
@@ -51,4 +51,3 @@ const AppContent = () => {
 };
 
 export default App;
-
