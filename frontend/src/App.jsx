@@ -3,18 +3,21 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import { Spinner } from "react-bootstrap";
-import { AuthProvider, AuthUser } from "../store/Auth-store"; // Import AuthProvider
+import { AuthProvider, AuthUser } from "../store/Auth-store";
+import { FlashProvider } from "../store/FlashContext";
+import FlashMessage from "./components/FlashMessage";
 import "./App.css";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <FlashProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </FlashProvider>
   );
 };
 
-// Separate AppContent to use useContext safely inside AuthProvider
 const AppContent = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { loading } = useContext(AuthUser);
@@ -26,6 +29,7 @@ const AppContent = () => {
   return (
     <div className="app">
       <Navbar />
+     
       <div className="content-container">
         <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
@@ -35,7 +39,10 @@ const AppContent = () => {
               <span className="ms-2">Loading content...</span>
             </div>
           ) : (
+            <>
+             <FlashMessage /> {/* Flash message shows globally */}
             <Outlet />
+            </>
           )}
         </div>
       </div>
@@ -44,3 +51,4 @@ const AppContent = () => {
 };
 
 export default App;
+
