@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const signup = async (req, res) => {
   try {
     const { username, password, email, name, role } = req.body;
-      console.log(req.body);
+      //console.log(req.body);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Email is not valid" });

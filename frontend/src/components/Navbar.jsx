@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   Navbar,
   Nav,
   Container,
   Button,
   Spinner,
+  Dropdown,
 } from "react-bootstrap";
 import {
   FaBell,
@@ -14,9 +15,11 @@ import {
   FaBars,
   FaGraduationCap,
   FaUserCircle,
+  FaTimes,
 } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthUser } from "../../store/Auth-store";
+import { NotificationContext } from "../../store/NotificationContext";
 import SearchBox from "./SearchBox";
 import "./Navbar.css";
 import { useNavigate } from "react-router";
@@ -24,13 +27,18 @@ import { useNavigate } from "react-router";
 const EduTrackNavbar = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const { user, loading, logout } = useContext(AuthUser);
+  const { notifications, markAllSeen, deleteNotification } =
+    useContext(NotificationContext);
+
   const isLoggedIn = !!user;
   const role = user?.role || "guest";
+
+  const unseenCount = notifications.filter((n) => !n.seen).length;
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="shadow-lg px-3">
       <Container fluid className="d-flex align-items-center">
-        {/* Sidebar Toggle Button */}
+        {/* Sidebar Toggle */}
         <Button
           variant="link"
           className="text-white me-3 p-0"
@@ -66,10 +74,59 @@ const EduTrackNavbar = ({ toggleSidebar }) => {
 
               <SearchBox />
 
-              <Nav className="ms-auto">
-                <Nav.Link href="/notifications">
-                  <FaBell />
-                </Nav.Link>
+              <Nav className="ms-auto align-items-center">
+                {/* 🔔 Notification Dropdown */}
+                <Dropdown align="end" onToggle={(isOpen) => isOpen && markAllSeen()}>
+                  <Dropdown.Toggle
+                    variant="link"
+                    className="text-white position-relative"
+                  >
+                    <FaBell
+                      size={20}
+                      color={unseenCount > 0 ? "red" : "white"}
+                    />
+                    {unseenCount > 0 && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: 2,
+                          right: 2,
+                          background: "red",
+                          borderRadius: "50%",
+                          color: "white",
+                          fontSize: "0.7rem",
+                          padding: "2px 5px",
+                        }}
+                      >
+                        {unseenCount}
+                      </span>
+                    )}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu style={{ minWidth: "250px" }}>
+                    {notifications.length === 0 ? (
+                      <Dropdown.ItemText>No notifications</Dropdown.ItemText>
+                    ) : (
+                      notifications.map((n) => (
+                        <Dropdown.ItemText
+                          key={n.id}
+                          className="d-flex justify-content-between align-items-center"
+                        >
+                          <span>{n.msg}</span>
+                          <FaTimes
+                            style={{
+                              cursor: "pointer",
+                              marginLeft: "10px",
+                              color: "gray",
+                            }}
+                            onClick={() => deleteNotification(n.id)}
+                          />
+                        </Dropdown.ItemText>
+                      ))
+                    )}
+                  </Dropdown.Menu>
+                </Dropdown>
+
                 {isLoggedIn ? (
                   <>
                     <Nav.Link href="/profile">

@@ -28,6 +28,7 @@ async function addAssignment(req, res) {
         });
 
         await newAssignment.save();
+        req.io.to(req.params.courseid).emit("newAssignment",{message:`new assignment was added in ${course.title}`});
         res.status(201).json(newAssignment);
     } catch (err) {
         res.status(500).json({ error: err.message });

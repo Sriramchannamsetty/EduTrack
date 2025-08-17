@@ -48,7 +48,7 @@ async function deleteCourse(req, res) {
 }
 async function editCourse(req,res){
     try{
-        console.log("edit course");
+        //console.log("edit course");
         let {courseid} = req.params;
         let teacher = await User.findById(req.params.id);
         if(!teacher||teacher.role!=="teacher")return res.status(400).json({error:"not a teacher"});
@@ -81,7 +81,7 @@ async function joinCourse(req,res){
     if(!course){
         return res.status(400).json({error:"course not found"});
     }
-    console.log(course.passkey,passkey);
+    //console.log(course.passkey,passkey);
     if(course.passkey!=passkey){
       
         return res.status(400).json({error:"invalid passkey"});
@@ -146,7 +146,7 @@ async function leaveCourse(req, res) {
 
 async function getCourse(req, res) {
     try {
-       console.log("abcdefgh");
+       //console.log("abcdefgh");
       let { courseid, id } = req.params;
   
       let user = await User.findById(id).select("name email role");
@@ -197,7 +197,7 @@ async function getCourse(req, res) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        console.log(user);
+        //console.log(user);
 
         // Check if population actually worked
         if (!user.courses.length || !user.courses[0].course.title) {

@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { Spinner } from "react-bootstrap";
 import { AuthProvider, AuthUser } from "../store/Auth-store";
 import { FlashProvider } from "../store/FlashContext";
+import { NotificationProvider } from "../store/NotificationContext";
 import FlashMessage from "./components/FlashMessage";
 import "./App.css";
 
@@ -12,7 +13,9 @@ const App = () => {
   return (
     <FlashProvider>
       <AuthProvider>
+        <NotificationProvider>
         <AppContent />
+        </NotificationProvider>
       </AuthProvider>
     </FlashProvider>
   );
